@@ -14,3 +14,8 @@ gen/
 
 #lint file
 lint.xml
+*.iml
+.gradle/
+.idea/
+build/
+gradle/

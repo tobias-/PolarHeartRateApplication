@@ -78,7 +78,7 @@ public class DataHandler extends Observable{
 		else if(val>max)
 			max=val;
 		setChanged();
-		notifyObservers();
+		notifyObservers(i);
 	}
 	
 	public int getLastValue(){

@@ -55,13 +55,12 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	boolean normal = false; //Was the BT tested
 	private Spinner spinner1;
 
-
-	@Override
+    @Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		Log.i("Main Activity", "Starting Polar HR monitor main activity");
-		DataHandler.getInstance().addObserver(this);		
+		DataHandler.getInstance().addObserver(this);
 		AdView mAdView = (AdView) findViewById(R.id.adView);
 
         // Create an ad request. Check logcat output for the hashed device ID to

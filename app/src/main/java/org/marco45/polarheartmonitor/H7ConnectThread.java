@@ -2,6 +2,7 @@ package org.marco45.polarheartmonitor;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
@@ -11,6 +12,13 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
 import android.util.Log;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.fitness.Fitness;
+import com.google.android.gms.fitness.data.DataPoint;
+import com.google.android.gms.fitness.data.DataSet;
+import com.google.android.gms.fitness.data.DataSource;
+import com.google.android.gms.fitness.data.DataType;
 
 /**
  * This thread to the connection with the bluetooth device
@@ -25,6 +33,8 @@ public class H7ConnectThread  extends Thread{
 	private final String HRUUID = "0000180D-0000-1000-8000-00805F9B34FB";
 	static BluetoothGattDescriptor descriptor;
 	static BluetoothGattCharacteristic cc;
+    private GoogleApiClient googleApiClient;
+    private DataSource dataSource;
 	
 	public H7ConnectThread(BluetoothDevice device, MainActivity ac) {
 		Log.i("H7ConnectThread", "Starting H7 reader BTLE");
@@ -38,7 +48,6 @@ public class H7ConnectThread  extends Thread{
 		gat.setCharacteristicNotification(cc,false);
 		descriptor.setValue( BluetoothGattDescriptor.DISABLE_NOTIFICATION_VALUE);
 	    gat.writeDescriptor(descriptor);
-		
 		gat.disconnect();
 		gat.close();
 		Log.i("H7ConnectThread", "Closing HRsensor");
@@ -54,7 +63,7 @@ public class H7ConnectThread  extends Thread{
 	    	byte[] data = characteristic.getValue();
 	    	int bmp = data[1] & 0xFF; // To unsign the value
 	    	DataHandler.getInstance().cleanInput(bmp);
-			Log.v("H7ConnectThread", "Data received from HR "+bmp);
+            Log.v("H7ConnectThread", "Data received from HR "+bmp);
 	    }
 	 
 		//called on the successful connection
