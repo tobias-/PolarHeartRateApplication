@@ -54,6 +54,7 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	boolean h7 = false; //Was the BTLE tested
 	boolean normal = false; //Was the BT tested
 	private Spinner spinner1;
+    private GoogleFitnessIntegration googleFitnessIntegration;
 
     @Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,8 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 		setContentView(R.layout.activity_main);
 		Log.i("Main Activity", "Starting Polar HR monitor main activity");
 		DataHandler.getInstance().addObserver(this);
+        googleFitnessIntegration = new GoogleFitnessIntegration(getApplicationContext());
+        googleFitnessIntegration.connect();
 		AdView mAdView = (AdView) findViewById(R.id.adView);
 
         // Create an ad request. Check logcat output for the hashed device ID to
@@ -143,6 +146,9 @@ public class MainActivity extends Activity  implements OnItemSelectedListener, O
 	protected void onDestroy(){
 		super.onDestroy();
 		DataHandler.getInstance().deleteObserver(this);
+        if (googleFitnessIntegration != null) {
+            googleFitnessIntegration.disconnect();
+        }
 	}
 
 	public void onStart(){
